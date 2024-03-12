@@ -3,6 +3,8 @@
 int test01();
 void test02(int a);
 
+//ê¹ƒí—ˆë¸Œ í…ŒìŠ¤íŠ¸
+
 int main()
 {
 	//test01;
@@ -13,13 +15,13 @@ int test01()
 {
 	char* star[] = { "zero","one","two","three","four","five","six","seven","eight","nine" };
 
-	printf("¼ıÀÚ Å°¸¦ ÀÔ·ÂÇÏ¼¼¿ä.ÇØ´çÇÏ´Â ¿µ´Ü¾î¸¦ ¾Ë·Áµå¸®°Ú½À´Ï´Ù.\n");
-	printf("ÇÁ·Î±×·¥À» ³¡³»·Á¸é'Q'¸¦ ÀÔ·ÂÇÏ½Ã¿À.\n\n");
+	printf("ìˆ«ì í‚¤ë¥¼ ì…ë ¥í•˜ì„¸ìš”.í•´ë‹¹í•˜ëŠ” ì˜ë‹¨ì–´ë¥¼ ì•Œë ¤ë“œë¦¬ê² ìŠµë‹ˆë‹¤.\n");
+	printf("í”„ë¡œê·¸ë¨ì„ ëë‚´ë ¤ë©´'Q'ë¥¼ ì…ë ¥í•˜ì‹œì˜¤.\n\n");
 	int n = 1;
 	while (n)
 	{
 		printf(">");
-		char c = getch(); // no echo : Å°°ªÀ» Ãâ·ÂÇÏÁö ¾ÊÀ½
+		char c = getch(); // no echo : í‚¤ê°’ì„ ì¶œë ¥í•˜ì§€ ì•ŠìŒ
 		//int n = c - 0x30; //ASKII --> num
 		printf("%c : %s\n", c, star[c - 0x30]);
 
@@ -42,7 +44,7 @@ int test01()
 	}
 
 }
-void test02(int a) //¹®ÀÚ¿­°ú ¹®ÀÚ¹è¿­
+void test02(int a) //ë¬¸ìì—´ê³¼ ë¬¸ìë°°ì—´
 {
 	char ca[] = "Hello"; // ca[0] : 'H' ... ca[4]:'0' ca[5]:\0
 	for (int i = 0; i < 10; i++) // 0 ~ 5
