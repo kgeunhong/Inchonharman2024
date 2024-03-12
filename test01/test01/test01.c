@@ -3,8 +3,6 @@
 int test01();
 void test02(int a);
 
-//깃허브 테스트
-
 int main()
 {
 	//test01;
