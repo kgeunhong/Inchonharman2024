@@ -131,7 +131,107 @@ int main(void)
 				//_delay_ms(500);
 			//}
 	//	}
+
+
+
+
 	}
 	return 0;
+}
+```
+##인천 하만과정 2024년 3월 27일
+```
+#define F_CPU 16000000L
+
+#include <avr/io.h>
+#include <util/delay.h>
+#include <avr/interrupt.h>
+
+#define _delay_t 500
+#define OPMODEMAX 3
+#define STATE_MAX 3
+
+uint8_t digit[] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x27, 0x7F, 0x67, 0x77, 0x7C, 0x58, 0x5E, 0x79, 0x71};
+char arr[5]; //
+volatile int opmode =0, state = 0; //최적화 금지
+
+void seg(int sel, uint8_t c)
+{
+	PORTC |= 0x0F;
+	PORTC &= ~(1 <<(3-sel));
+	PORTD = c;  // 숫자 데이터 출력
+	//_delay_ms(100);
+}
+
+void FND_4(char *inf)//segment image 배열
+{
+	for(int i=0; i<4; i++)
+	{
+		seg(i, *(inf+i));  // = seg(i, inf[i]);
+		_delay_ms(5);
+	}
+}
+
+char* Disp(unsigned long num) // 10진 정수 ==> 16진수 문자열 : 65535 ==> 0xFFFF,  56506 ==> 0xDCBA
+                              //           ==> 4 digit 16진수 segment 출력
+{
+	int n1 = num % 16;       //A (10) : 문자가 아닌 숫자
+	int n2 = (num/16) % 16;  //B (11)
+	int n3 = (num/256) % 16; //C (12)
+	int n4 = (num/4096);     //D (13)
+	arr[0] = digit[n1];
+	arr[1] = digit[n2];
+	arr[2] = digit[n3];
+	arr[3] = digit[n4];
+	
+	FND_4(arr);
+	return arr;
+}
+
+int main(void)
+{
+    /* Replace with your application code */
+	// 7-Segment 사용 : 4Module ~ C type
+	// Pin assign : PAx - Segment img, PBx -module sel
+	// Interrupt 사용 : INT4 ~ INT6 (Ext Int)
+	// Pin assign : PE4 ~ PE6
+	 DDRD = 0xFF;
+	 DDRC = 0x0F;
+	
+	// 인터럽트 설정
+	EIMSK = 0x70; // 0111 0000b
+	EICRB = 0x2a; // 0010 1010b
+	SREG |= 0x80; // status Register -인터럽트 허용
+    sei(); // set interrupt - 인터럽트 시작
+	
+	int t = 0;
+	while (1) 
+    {
+		switch(opmode)
+		{
+			case 0: //reset & wait
+			t = 0; break;
+			case 1: // counter start
+			t++; break;
+			case 2: // count stop
+			break;
+			default: break;
+		}
+		Disp(t);
+    }
+}
+ISR(INT4_vect) // INT4 인터럽트 처리루틴 : sw1
+{
+	opmode++;
+	if(opmode >= OPMODEMAX)opmode = 0;
+}
+ISR(INT5_vect) // INT5 인터럽트 처리루틴 : sw2
+{
+	state++;
+	if(state >= STATE_MAX)state = 0;	
+}
+ISR(INT6_vect) // INT6 인터럽트 처리루틴 : sw3
+{
+	
 }
 ```
