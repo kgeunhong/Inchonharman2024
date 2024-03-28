@@ -234,7 +234,7 @@ ISR(INT6_vect) // INT6 인터럽트 처리루틴 : sw3
 {
 	
 }
-```
+
 ##Segment
 #define F_CPU 16000000L
 
